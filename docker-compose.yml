@@ -1,0 +1,34 @@
+# version: "3.9"
+
+# services:
+#   web:
+#     build:
+#       context: .
+#     container_name: myproject
+#     ports:
+#       - "8003:8003"
+#       - "4567:4567"
+#     volumes:
+#       - ./:/app:cached
+#     working_dir: /app
+#     environment:
+#       # - PYTHONPATH=/app/apps
+#     command: >
+#       python -m debugpy --listen 0.0.0.0:4567 manage.py runserver 0.0.0.0:8003
+
+
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: .
+    container_name: myproject
+    ports:
+      - "8003:8003"
+      - "4567:4567"
+    volumes:
+      - ./:/app:cached
+    working_dir: /app
+    command: >
+      python -m debugpy --listen 0.0.0.0:4567 manage.py runserver 0.0.0.0:8003

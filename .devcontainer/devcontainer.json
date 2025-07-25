@@ -1,0 +1,55 @@
+// {
+//   "name": "Python Django Dev",
+//   "image": "mcr.microsoft.com/devcontainers/python:3.11",
+//   "workspaceFolder": "/app",
+//   "mounts": [
+//     "source=${localWorkspaceFolder},target=/app,type=bind"
+//   ],
+//   "customizations": {
+//     "vscode": {
+//       "extensions": [
+//         "ms-python.python",
+//         "ms-python.vscode-pylance",
+//         "ms-azuretools.vscode-docker",
+//         "mutantdino.resourcemonitor",
+//         "tomoki1207.pdf",
+//         "ms-vscode.vscode-typescript-next",
+//         "shd101wyy.markdown-preview-enhanced",
+//         "yzhang.markdown-all-in-one",
+//         "esbenp.prettier-vscode",
+//         "ms-python.black-formatter",
+//         "seeloq.python-ai"
+//       ]
+//     }
+//   },
+//   "remoteUser": "root"
+// }
+
+{
+  "name": "Python Django Dev",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "web",
+  "workspaceFolder": "/app",
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/app,type=bind"
+  ],
+  "runArgs": ["--service-ports"],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-azuretools.vscode-docker",
+        "mutantdino.resourcemonitor",
+        "tomoki1207.pdf",
+        "ms-vscode.vscode-typescript-next",
+        "shd101wyy.markdown-preview-enhanced",
+        "yzhang.markdown-all-in-one",
+        "esbenp.prettier-vscode",
+        "ms-python.black-formatter",
+        "seeloq.python-ai"
+      ]
+    }
+  },
+  "remoteUser": "root"
+}

@@ -1,0 +1,45 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+env/
+.venv/
+
+# VSCode settings
+.vscode/
+
+# Environment variable files
+.env
+
+# SQLite database
+*.sqlite3
+
+# Docker artifacts
+*.log
+docker-compose.override.yml
+
+# Python dependency management
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Ignore test and coverage files
+htmlcov/
+.coverage
+.tox/
+.nox/
+.pytest_cache/
+
+# Ignore mypy and Pylint reports
+.mypy_cache/
+.dmypy.json
+.pyre/
+.pytype/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# System files
+.DS_Store
+Thumbs.db

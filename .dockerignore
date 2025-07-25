@@ -1,0 +1,47 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environment
+env/
+venv/
+ENV/
+.venv/
+
+# Django-related
+*.sqlite3
+db.sqlite3
+*.log
+*.pot
+*.pyc
+*.mo
+
+# Static/media files (ถ้าสร้างแล้วตอน runtime ค่อย mount เข้าไป)
+staticfiles/
+media/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+
+# Node (สำหรับ frontend ที่อยู่ใน project เดียวกัน)
+node_modules/
+build/
+dist/
+*.tsbuildinfo
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
