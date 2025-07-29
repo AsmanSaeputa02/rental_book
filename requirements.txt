@@ -14,5 +14,4 @@ django-tenants==3.8.0
 drf-yasg==1.21.10
 uvicorn==0.34.3
 whitenoise==6.9.0
-jira==3.8.0
 

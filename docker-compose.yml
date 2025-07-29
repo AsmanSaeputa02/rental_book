@@ -15,8 +15,6 @@
 #       # - PYTHONPATH=/app/apps
 #     command: >
 #       python -m debugpy --listen 0.0.0.0:4567 manage.py runserver 0.0.0.0:8003
-
-
 version: "3.9"
 
 services:
@@ -32,3 +30,28 @@ services:
     working_dir: /app
     command: >
       python -m debugpy --listen 0.0.0.0:4567 manage.py runserver 0.0.0.0:8003
+    depends_on:
+      - db
+    environment:
+      DB_NAME: bookrental
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: db
+      DB_PORT: 9876
+
+  db:
+    image: postgres:15
+    container_name: postgres-db
+    restart: always
+    ports:
+      - "7771:9876"     # external:internal
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: bookrental
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    command: postgres -p 9876   # 👈 สำคัญมาก ให้ postgres ใช้พอร์ต 9876 ภายใน container
+
+volumes:
+  postgres_data:

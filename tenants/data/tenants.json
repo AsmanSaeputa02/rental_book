@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Branch A Bookstore",
+    "schema_name": "branch_a",
+    "paid_until": "2025-12-31",
+    "on_trial": false,
+    "company": {
+      "cid": "branch-a-001",
+      "name": "Branch A Co., Ltd.",
+      "alias": "Branch A",
+      "client_id": "abc123",
+      "client_secret": "secret123",
+      "is_active": true
+    }
+  },
+  {
+    "name": "Branch B Bookstore",
+    "schema_name": "branch_b",
+    "paid_until": "2025-12-31",
+    "on_trial": true,
+    "company": {
+      "cid": "branch-b-002",
+      "name": "Branch B Co., Ltd.",
+      "alias": "Branch B",
+      "client_id": "abc456",
+      "client_secret": "secret456",
+      "is_active": true
+    }
+  }
+]
