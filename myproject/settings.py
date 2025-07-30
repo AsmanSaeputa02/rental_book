@@ -15,10 +15,13 @@ WEB_REAL_PATH = "book_project"
 TENANT_MODEL = "tenants.Client"             # <app_name>.<model>
 TENANT_DOMAIN_MODEL = "tenants.Domain"      # <app_name>.<model>
 
+AUTH_USER_MODEL = "user.User"
+
 SHARED_APPS = (
     "django_tenants",     # ต้องมาก่อน
     "tenants",    
-    "company",        # app ที่มี Client / Domain
+    "company",
+    "user", # app ที่มี Client / Domain
     "django.contrib.contenttypes",
     "django.contrib.auth",
     "django.contrib.sessions",
@@ -37,7 +40,14 @@ TENANT_APPS = (
     "django.contrib.auth",
 )
 
+
+
 INSTALLED_APPS = list(SHARED_APPS) + [x for x in TENANT_APPS if x not in SHARED_APPS]
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    )
+}
 
 
 DATABASE_ROUTERS = ("django_tenants.routers.TenantSyncRouter",)
