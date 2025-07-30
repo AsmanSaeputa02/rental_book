@@ -35,7 +35,8 @@ SHARED_APPS = (
 
 TENANT_APPS = (
     "services", 
-    "book",          # tenant-aware app
+    "book",     
+    "rental",     # tenant-aware app
     "django.contrib.contenttypes",
     "django.contrib.auth",
 )
