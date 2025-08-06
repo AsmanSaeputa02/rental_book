@@ -38,6 +38,8 @@ TENANT_APPS = (
     "book",          # tenant-aware app
     "django.contrib.contenttypes",
     "django.contrib.auth",
+    "rental",
+    "dashbord",
 )
 
 
