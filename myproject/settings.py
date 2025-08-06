@@ -40,6 +40,7 @@ TENANT_APPS = (
     "django.contrib.auth",
     "rental",
     "dashbord",
+    "tests"
 )
 
 
