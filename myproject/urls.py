@@ -51,4 +51,5 @@ urlpatterns = [
     path(f"{_real_path}/admin/redoc/", admin_schema_view.with_ui("redoc", cache_timeout=0), name="admin-schema-redoc"),
     path(f"{_real_path}/admin/", admin.site.urls),
     path(f"{_real_path}/accounts/", include("django.contrib.auth.urls")),
+   
 ]

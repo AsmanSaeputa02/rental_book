@@ -29,7 +29,9 @@ class RentalViewSet(ViewSet):
         }
     )
     def list(self, request):
-        return Response(RentalService.get_all_rentals())
+        rentals = RentalService.get_all_rentals()
+        print("📦 Rentals returned to client:", rentals)
+        return Response(rentals, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(
         operation_summary="เช่าหนังสือ",
