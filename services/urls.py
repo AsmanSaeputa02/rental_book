@@ -1,34 +1,23 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-# Import ViewSets ทั้งหมด
-from services.services_set import (
-    company_sevice,
-    book,
-    user_services,
-    auth_service,
-    rental_service,
-    dashbord_service,
-    admin_login,
-)
+from services.services_set.company_sevice import CompanyViewSet
+from services.services_set.book import BookViewSet
+from services.services_set.user_services import UserViewSet
+from services.services_set.auth_service import AuthViewSet
+from services.services_set.rental_service import RentalViewSet
+from services.services_set.dashbord_service import DashboardViewSet
+from services.services_set.admin_login import AdminLoginView  # ถ้ามี
 
-app_name = "api"
+
 router = DefaultRouter()
+router.register("company", CompanyViewSet, basename="company")
+router.register("book", BookViewSet, basename="book")
+router.register("user", UserViewSet, basename="user")
+router.register("auth", AuthViewSet, basename="auth")
+router.register("rental", RentalViewSet, basename="rental")
+router.register("dashboard", DashboardViewSet, basename="dashboard")
 
-# Register API endpoints
-router.register("company", company_sevice.CompanyViewSet, basename="company")
-router.register("book", book.BookViewSet, basename="book")
-router.register("user", user_services.UserViewSet, basename="user")
-router.register("auth", auth_service.AuthViewSet, basename="auth")
-router.register("rental", rental_service.RentalViewSet, basename="rental")
-router.register("dashboard", dashbord_service.DashboardViewSet, basename="dashboard")
-
-# Debug print all router URLs
-for url in router.urls:
-    print("📦 Router URL:", url)
-
-# Add manual path for admin login
 urlpatterns = [
-    path("", include(router.urls)),
-    path("admin-login/", admin_login.AdminLoginView.as_view(), name="admin-login"),
+    path("api/", include(router.urls)),   # => /book_project/api/<endpoint>/
 ]
