@@ -23,16 +23,25 @@ class TenantService:
             defaults={"is_primary": True}
         )
 
-        # ➤ เพิ่ม domain 127.0.0.1 สำหรับ dev (เฉพาะถ้ายังไม่มี)
-        existing_domain = Domain.objects.filter(domain="127.0.0.1").first()
-        if not existing_domain:
-            Domain.objects.create(
-                domain="127.0.0.1",
-                tenant=tenant,
-                is_primary=False
-            )
-        elif existing_domain.tenant != tenant:
-            print(f"⚠️ Domain '127.0.0.1' ถูกใช้โดย tenant อื่นแล้ว → ข้าม")
+        # ➤ เพิ่ม domain 127.0.0.1 สำหรับ dev (ใช้ get_or_create แทน create)
+        domain_127, domain_created = Domain.objects.get_or_create(
+            domain="127.0.0.1",
+            defaults={
+                "tenant": tenant,
+                "is_primary": False
+            }
+        )
+        
+        if domain_created:
+            print(f"✅ เพิ่ม domain '127.0.0.1' ให้กับ tenant '{tenant.schema_name}' สำเร็จ")
+        else:
+            # ถ้า domain มีอยู่แล้ว แต่ tenant ต่างกัน อัปเดต tenant
+            if domain_127.tenant != tenant:
+                print(f"ℹ️ อัปเดต domain '127.0.0.1' จาก tenant '{domain_127.tenant.schema_name}' เป็น '{tenant.schema_name}'")
+                domain_127.tenant = tenant
+                domain_127.save()
+            else:
+                print(f"ℹ️ Domain '127.0.0.1' ถูกใช้กับ tenant '{tenant.schema_name}' อยู่แล้ว")
 
         # ➤ สร้าง Company เมื่อ tenant ถูกสร้างใหม่เท่านั้น
         if created:
@@ -49,4 +58,3 @@ class TenantService:
                     }
                 )
 
-        return tenant
