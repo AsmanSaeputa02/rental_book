@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
 
 # --- Path setup ---
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -50,6 +51,27 @@ TENANT_APPS = (
     # "tests",       # ❌ ไม่ควรอยู่ใน TENANT_APPS
 )
 
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+SWAGGER_SETTINGS = {
+    "USE_SESSION_AUTH": False,  # เราใช้ JWT ไม่ใช่ session
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": 'JWT Authorization header. ใช้รูปแบบ: Bearer <token>',
+        }
+    },
+    # ให้ Swagger UI จำ token ไว้ (หลังรีเฟรชหน้า)
+    "PERSIST_AUTH": True,
+}
+
+
+
+
 INSTALLED_APPS = list(SHARED_APPS) + [x for x in TENANT_APPS if x not in SHARED_APPS]
 
 REST_FRAMEWORK = {
@@ -58,6 +80,11 @@ REST_FRAMEWORK = {
     ),
     # โปรดักชันมักเปิด permission default ให้ต้อง auth:
     # "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+}
+
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
 }
 
 DATABASE_ROUTERS = ("django_tenants.routers.TenantSyncRouter",)

@@ -42,7 +42,7 @@ services:
     container_name: bookrental-nginx
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./staticfiles:/app/staticfiles:ro     # 👈 ให้ nginx เห็น static
+      - ./staticfiles:/app/staticfiles:ro   
     ports:
       - "80:80"
     depends_on:

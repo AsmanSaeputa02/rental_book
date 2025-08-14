@@ -6,7 +6,6 @@ from tenants.functions.admin_auth import AdminAuthService
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
-
 class AdminLoginView(APIView):
     @swagger_auto_schema(
         operation_summary="Superadmin Login (Public Schema)",
@@ -14,8 +13,8 @@ class AdminLoginView(APIView):
             type=openapi.TYPE_OBJECT,
             required=["email", "password"],
             properties={
-                "email": openapi.Schema(type=openapi.TYPE_STRING, example="admin@branch-a.com"),
-                "password": openapi.Schema(type=openapi.TYPE_STRING, example="1234"),
+                "email": openapi.Schema(type=openapi.TYPE_STRING, example="superadmin@your.com"),
+                "password": openapi.Schema(type=openapi.TYPE_STRING, example="••••••"),
             },
         ),
         responses={200: "Login Success", 401: "Unauthorized"},

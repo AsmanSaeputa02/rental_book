@@ -1,79 +1,44 @@
-from rest_framework.viewsets import ViewSet
+# services/services_set/company.py
+from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from services.permissions import IsAdminGroup
 from company.functions.company import CompanyService
-from django.core.exceptions import ObjectDoesNotExist
 
+class CompanyViewSet(viewsets.ViewSet):
+    """
+    Swagger-only ViewSet: ไม่มี business logic
+    - ใช้ DjangoModelPermissions เป็นฐาน (map จากกลุ่ม/permissions)
+    - destroy (ลบ) บังคับกลุ่ม admin เท่านั้น
+    """
+    permission_classes = [IsAuthenticated, DjangoModelPermissions]
 
-class CompanyViewSet(ViewSet):
-    """
-    ViewSet สำหรับจัดการ Company (Swagger Only)
-    """
+    def get_permissions(self):
+        if self.action == "destroy":
+            return [IsAuthenticated(), IsAdminGroup()]
+        return super().get_permissions()
 
     def list(self, request):
-        companies = CompanyService.list_companies()
-        return Response([
-            {
-                "cid": c.cid,
-                "name": c.name,
-                "alias": c.alias,
-                "client_id": c.client_id,
-                "client_secret": c.client_secret,
-                "is_active": c.is_active
-            }
-            for c in companies
-        ])
-
-    def retrieve(self, request, pk=None):
-        company = CompanyService.get_company(cid=pk)
-        if not company:
-            return Response({"detail": "Company not found"}, status=status.HTTP_404_NOT_FOUND)
-        
-        return Response({
-            "cid": company.cid,
-            "name": company.name,
-            "alias": company.alias,
-            "client_id": company.client_id,
-            "client_secret": company.client_secret,
-            "is_active": company.is_active
-        })
+        limit = request.query_params.get("limit")
+        offset = request.query_params.get("offset", 0)
+        limit = int(limit) if limit is not None else None
+        offset = int(offset) if offset is not None else 0
+        data = CompanyService.list_companies(limit=limit, offset=offset)
+        return Response(data)
 
     def create(self, request):
-        try:
-            data = request.data
-            company = CompanyService.create_company(data)
-            return Response({
-                "cid": company.cid,
-                "name": company.name,
-                "alias": company.alias,
-                "client_id": company.client_id,
-                "client_secret": company.client_secret,
-                "is_active": company.is_active
-            }, status=status.HTTP_201_CREATED)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        result = CompanyService.create_company(request.data)
+        return Response(result, status=status.HTTP_201_CREATED)
+
+    def retrieve(self, request, pk=None):
+        # pk อาจเป็น cid หรือ id
+        data = CompanyService.get_company(pk)
+        return Response(data)
 
     def update(self, request, pk=None):
-        data = request.data
-        company = CompanyService.update_company(cid=pk, data=data)
-        if not company:
-            return Response({"detail": "Company not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        return Response({
-            "cid": company.cid,
-            "name": company.name,
-            "alias": company.alias,
-            "client_id": company.client_id,
-            "client_secret": company.client_secret,
-            "is_active": company.is_active
-        })
+        result = CompanyService.update_company(pk, request.data)
+        return Response(result)
 
     def destroy(self, request, pk=None):
-        try:
-            company = CompanyService.get_company(pk)
-            if not company:
-                return Response({"detail": "Company not found"}, status=status.HTTP_404_NOT_FOUND)
-            company.delete()
-            return Response({"detail": "Deleted"}, status=status.HTTP_204_NO_CONTENT)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        result = CompanyService.delete_company(pk)
+        return Response(result, status=status.HTTP_200_OK)
