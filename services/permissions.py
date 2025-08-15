@@ -1,5 +1,6 @@
+# services/permissions.py
 from rest_framework.permissions import BasePermission, SAFE_METHODS
-from django_tenants.utils import get_tenant
+from django.db import connection
 
 class IsAdminGroup(BasePermission):
     message = "Admin group only."
@@ -23,10 +24,10 @@ class IsSuperAdmin(BasePermission):
     message = "Superadmin (public schema) only."
     def has_permission(self, request, view):
         u = request.user
-        t = get_tenant()
-        return bool(u and u.is_authenticated and u.is_superuser and t.schema_name == "public")
+        return bool(
+            u and u.is_authenticated and u.is_superuser and connection.schema_name == "public"
+        )
 
 class ReadOnly(BasePermission):
-    """อนุญาตเฉพาะเมธอดอ่าน (GET/HEAD/OPTIONS)"""
     def has_permission(self, request, view):
         return request.method in SAFE_METHODS

@@ -10,10 +10,8 @@ load_dotenv(dotenv_path=BASE_DIR / ".env")
 # --- Security ---
 SECRET_KEY = 'django-insecure-+h4su3wzz^@sfezz+o!ek5%x)izheo7b&_pq6!+)%$3h^6j4p^'
 DEBUG = True  # โปรดักชันให้ False
-ALLOWED_HOSTS = [
-    "localhost", "127.0.0.1",
-    "branch_a.localhost", "branch_b.localhost", ".localhost",
-    ]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'branch-a.localhost', 'branch-b.localhost', '.localhost']
+
 WEB_REAL_PATH = "book_project"
 
 # --- Tenant Config ---
@@ -142,11 +140,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")      # => /app/staticfiles
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")  # เตรียมพร้อมตอนเปิด HTTPS
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost", "http://127.0.0.1",
-    "http://branch_a.localhost", "http://branch_b.localhost",
-    "https://localhost", "https://branch_a.localhost", "https://branch_b.localhost",
-    # เปิดโปรดักชันค่อยเติม "https://your-domain", "https://*.your-domain"
+    'http://localhost', 'http://127.0.0.1',
+    'http://branch_a.localhost', 'http://branch_b.localhost',
+    'https://localhost', 'https://branch_a.localhost', 'https://branch_b.localhost',
 ]
+
 
 # --- Internationalization ---
 LANGUAGE_CODE = "en-us"

@@ -1,4 +1,5 @@
 # services/services_set/book_admin.py
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -18,6 +19,7 @@ class AdminBookCreateView(APIView):
 
     @swagger_auto_schema(
         operation_summary="Superadmin: Create book in a given tenant schema",
+        security=[{"Bearer": []}],
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
             required=["schema_name", "data"],
@@ -30,11 +32,11 @@ class AdminBookCreateView(APIView):
                         "author": openapi.Schema(type=openapi.TYPE_STRING, example="Robert C. Martin"),
                         "isbn": openapi.Schema(type=openapi.TYPE_STRING, example="9780132350884"),
                         "available_count": openapi.Schema(type=openapi.TYPE_INTEGER, example=3),
-                    }
+                    },
                 ),
             },
         ),
-        responses={201: "Created", 400: "Bad Request", 403: "Forbidden", 404: "Tenant schema not found"},
+        responses={201: "Created", 403: "Forbidden", 400: "Bad Request", 404: "Tenant Not Found"},
     )
     def post(self, request):
         schema_name = (request.data.get("schema_name") or "").strip()

@@ -23,8 +23,14 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
-def whoami(_):
-    return HttpResponse(connection.schema_name)
+def whoami(request):
+    return JsonResponse({
+        "current_schema": getattr(connection, "schema_name", None),
+        "host": request.get_host(),
+        "path": request.path,
+        "is_authenticated": request.user.is_authenticated,
+        "user": getattr(request.user, "email", None),
+    })
 
 def root_redirect(_):
     return HttpResponseRedirect(f"/{WEB_REAL_PATH}/admin/swagger/")
@@ -98,5 +104,6 @@ urlpatterns = [
     path(f"{WEB_REAL_PATH}/", include("services.urls")),  
     path(f"{WEB_REAL_PATH}/whoami/", whoami),
     path(f"{WEB_REAL_PATH}/hostinfo/", hostinfo),
-    path(f"{WEB_REAL_PATH}/debug-tenant/", debug_tenant),  # Add this line
+    path(f"{WEB_REAL_PATH}/debug-tenant/", debug_tenant), 
+    
 ]
