@@ -21,10 +21,10 @@ TENANT_DOMAIN_MODEL = "tenants.Domain"
 AUTH_USER_MODEL = "user.User"
 
 SHARED_APPS = (
-    "django_tenants",      # ต้องมาก่อน
+    "django_tenants",    
     "tenants",
     "company",
-    "user",
+ 
 
     "django.contrib.contenttypes",
     "django.contrib.auth",
@@ -45,8 +45,9 @@ TENANT_APPS = (
     "django.contrib.contenttypes",
     "django.contrib.auth",
     "rental",
-    "dashboard",     # ✅ แก้จาก "dashbord"
-    # "tests",       # ❌ ไม่ควรอยู่ใน TENANT_APPS
+    "dashboard",   
+    "user",
+    
 )
 
 AUTHENTICATION_BACKENDS = [
