@@ -9,7 +9,9 @@ class UserService:
     @staticmethod
     def list_users() -> List[dict]:
         return [
-            {"id": u.id, "email": u.email, "name": getattr(u, "full_name", "")}
+            {"id": u.id,
+            "email": u.email, 
+            "name": getattr(u, "full_name", "")}
             for u in UserModel.objects.all().order_by("-id")
         ]
 

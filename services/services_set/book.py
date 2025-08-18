@@ -1,3 +1,6 @@
+# book/BookViewSet
+
+
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import status
@@ -6,6 +9,8 @@ from services.permissions import IsAdminGroup, ReadOnly
 from book.functions.book import BookService
 from book.models import Book
 from book.functions import book
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 
 class BookViewSet(ViewSet):
@@ -28,10 +33,29 @@ class BookViewSet(ViewSet):
         offset = int(offset) if offset is not None else 0
         return Response(BookService.list_books(limit=limit, offset=offset))
 
+    @swagger_auto_schema(
+        operation_summary="สร้าง Book ใหม่ (เฉพาะกลุ่ม admin)",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=["isbn", "title", "author", "price"],
+            properties={
+                "isbn": openapi.Schema(type=openapi.TYPE_STRING),
+                "title": openapi.Schema(type=openapi.TYPE_STRING),
+                "author": openapi.Schema(type=openapi.TYPE_STRING),
+                "price": openapi.Schema(type=openapi.TYPE_NUMBER),
+                "available_count": openapi.Schema(type=openapi.TYPE_INTEGER),
+            },
+        ),
+        responses={201: openapi.Response(description="Book created")}
+    )
     def create(self, request):
-        # บังคับให้เฉพาะ admin group สร้างได้
         checker = IsAdminGroup()
         if not checker.has_permission(request, self):
             return Response({"detail": checker.message}, status=403)
+
         result = BookService.create_book(request.data)
+        
+        if "error" in result:
+            return Response(result, status=status.HTTP_400_BAD_REQUEST)
+
         return Response(result, status=status.HTTP_201_CREATED)

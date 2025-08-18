@@ -92,11 +92,31 @@ class BookService:
 
     @staticmethod
     @transaction.atomic
-    def create_book(data: Dict[str, Any]) -> Dict[str, Any]:
-        payload = {k: v for k, v in data.items() if k in BOOK_WRITABLE_FIELDS}
-        payload = _coerce_payload_to_model(payload)
-        obj = Book.objects.create(**payload)
-        return _to_dict(obj)
+    def create_book(data):
+        required_fields = ["isbn", "title", "author", "price"]
+
+        missing = [f for f in required_fields if not data.get(f)]
+        if missing:
+            return {
+                "error": f"Missing required fields: {', '.join(missing)}"
+            }
+
+        # ป้องกัน ISBN ซ้ำ
+        if Book.objects.filter(isbn=data["isbn"]).exists():
+            return {
+                "error": "This ISBN already exists."
+            }
+
+        book = Book.objects.create(
+            isbn=data["isbn"],
+            title=data["title"],
+            author=data["author"],
+            price=data["price"]
+        )
+        return {
+            "message": "Book created successfully",
+            "id": book.id
+        }
 
     @staticmethod
     @transaction.atomic
