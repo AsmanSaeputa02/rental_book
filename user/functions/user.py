@@ -8,13 +8,14 @@ UserModel = get_user_model()
 class UserService:
     @staticmethod
     def list_users() -> List[dict]:
+        from django_tenants.utils import get_tenant
+        tenant = get_tenant(request=None)  # Assuming this is called in a request context
+        print(f"🔍 Current tenant schema: {tenant.schema_name}")
+        
         return [
-            {"id": u.id,
-            "email": u.email, 
-            "name": getattr(u, "full_name", "")}
+            {"id": u.id, "email": u.email, "name": getattr(u, "full_name", "")}
             for u in UserModel.objects.all().order_by("-id")
         ]
-
     @staticmethod
     def get_user(user_id: int) -> dict:
         u = UserModel.objects.get(id=user_id)
