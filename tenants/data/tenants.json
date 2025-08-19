@@ -2,6 +2,7 @@
   {
     "name": "Branch A Bookstore",
     "schema_name": "branch_a",
+    "domain_url": "branch-a.localhost",
     "paid_until": "2025-12-31",
     "on_trial": false,
     "company": {
@@ -16,6 +17,7 @@
   {
     "name": "Branch B Bookstore",
     "schema_name": "branch_b",
+    "domain_url": "branch-b.localhost",
     "paid_until": "2025-12-31",
     "on_trial": true,
     "company": {
@@ -24,6 +26,21 @@
       "alias": "Branch B",
       "client_id": "abc456",
       "client_secret": "secret456",
+      "is_active": true
+    }
+  },
+  {
+    "name": "Branch C Bookstore",
+    "schema_name": "branch_c",
+    "domain_url": "branch-c.localhost",
+    "paid_until": "2025-12-31",
+    "on_trial": false,
+    "company": {
+      "cid": "branch-c-003",
+      "name": "Branch C Co., Ltd.",
+      "alias": "Branch C",
+      "client_id": "abc789",
+      "client_secret": "secret789",
       "is_active": true
     }
   }

@@ -1,3 +1,5 @@
+# tenants/functions/tenants.py
+
 from tenants.models import Client, Domain
 from django_tenants.utils import schema_context
 from company.models import Company
@@ -16,7 +18,7 @@ class TenantService:
         )
 
         # ➤ สร้าง domain หลัก เช่น branch_a.localhost
-        primary_domain = f"{tenant.schema_name}.localhost"
+        primary_domain = tenant_data.get("domain_url", f"{tenant.schema_name}.localhost")
         Domain.objects.get_or_create(
             domain=primary_domain,
             tenant=tenant,
