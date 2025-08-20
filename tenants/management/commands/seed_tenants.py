@@ -97,7 +97,7 @@ class Command(BaseCommand):
 
             # 4) seed groups/permissions (admin/staff) ใน tenant นี้
             try:
-                call_command("seed_groups", verbosity=0)
+                call_command("seed_groups", schema=schema, verbosity=0)
                 self.stdout.write("  - seeded groups (admin/staff)")
             except Exception as e:
                 self.stdout.write(self.style.WARNING(f"  - seed_groups skipped/failed: {e}"))

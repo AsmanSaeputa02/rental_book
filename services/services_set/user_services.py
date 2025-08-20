@@ -19,10 +19,12 @@ class UserViewSet(ViewSet):
     permission_classes = [IsAuthenticated, DjangoModelPermissions]
 
     def list(self, request):
-        return Response(UserService.list_users())
+        return Response(UserService.list_users(request))
 
     def retrieve(self, request, pk=None):
-        return Response(UserService.get_user(int(pk)))
+        if request.user.id != int(pk) and not request.user.groups.filter(name="admin").exists():
+            return Response({"detail": "Permission denied"}, status=403)
+        return Response(UserService.get_user(int(pk), request))
 
     @swagger_auto_schema(
     operation_description="Create user (admin only)",
@@ -56,6 +58,9 @@ class UserViewSet(ViewSet):
     )
 )
     def update(self, request, pk=None):
+        if request.user.id != int(pk) and not request.user.groups.filter(name="admin").exists():
+            return Response({"detail": "Permission denied"}, status=403)
+
         user = UserService.update_user(int(pk), dict(request.data))
         return Response(user)
 

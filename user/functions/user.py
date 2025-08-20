@@ -1,4 +1,3 @@
-# user/functions/user.py
 from typing import Dict, Any, List
 from django.contrib.auth import get_user_model
 from django.db import transaction
@@ -7,19 +6,30 @@ UserModel = get_user_model()
 
 class UserService:
     @staticmethod
-    def list_users() -> List[dict]:
-        from django_tenants.utils import get_tenant
-        tenant = get_tenant(request=None)  # Assuming this is called in a request context
-        print(f"🔍 Current tenant schema: {tenant.schema_name}")
-        
-        return [
-            {"id": u.id, "email": u.email, "name": getattr(u, "full_name", "")}
-            for u in UserModel.objects.all().order_by("-id")
-        ]
+    def list_users(request) -> Dict[str, Any]:
+        return {
+            "tenant": request.tenant.schema_name,
+            "users": [
+                {
+                    "id": u.id,
+                    "email": u.email,
+                    "name": getattr(u, "full_name", ""),
+                    "role": u.groups.first().name if u.groups.exists() else "staff"
+                }
+                for u in UserModel.objects.all().order_by("-id")
+            ]
+        }
+
     @staticmethod
-    def get_user(user_id: int) -> dict:
+    def get_user(user_id: int , request) -> dict:
         u = UserModel.objects.get(id=user_id)
-        return {"id": u.id, "email": u.email, "name": getattr(u, "full_name", "")}
+        return {
+            "id": u.id,
+            "email": u.email,
+            "name": getattr(u, "full_name", ""),
+            "role": u.groups.first().name if u.groups.exists() else "staff",
+            "tenant": request.tenant.schema_name 
+        }
 
     @staticmethod
     @transaction.atomic
@@ -30,7 +40,12 @@ class UserService:
         u = UserModel.objects.create(**data)
         u.set_password(password)
         u.save()
-        return {"id": u.id, "email": u.email, "name": getattr(u, "full_name", "")}
+        return {
+            "id": u.id,
+            "email": u.email,
+            "name": getattr(u, "full_name", ""),
+            "role": u.groups.first().name if u.groups.exists() else "staff"
+        }
 
     @staticmethod
     @transaction.atomic
@@ -45,7 +60,12 @@ class UserService:
             setattr(u, key, value)
 
         u.save()
-        return {"id": u.id, "email": u.email, "name": getattr(u, "full_name", "")}
+        return {
+            "id": u.id,
+            "email": u.email,
+            "name": getattr(u, "full_name", ""),
+            "role": u.groups.first().name if u.groups.exists() else "staff"
+        }
 
     @staticmethod
     @transaction.atomic

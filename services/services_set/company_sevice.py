@@ -18,7 +18,7 @@ class CompanyViewSet(viewsets.ViewSet):
             return [IsAuthenticated(), IsAdminGroup()]
         return super().get_permissions()
 
-    def list(self, request):
+    def list(self, request):  
         limit = request.query_params.get("limit")
         offset = request.query_params.get("offset", 0)
         limit = int(limit) if limit is not None else None
