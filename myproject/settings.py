@@ -24,6 +24,7 @@ SHARED_APPS = (
     "django_tenants",    
     "tenants",
     "company",
+    "corsheaders",
  
 
     "django.contrib.contenttypes",
@@ -94,6 +95,7 @@ DATABASE_ROUTERS = ("django_tenants.routers.TenantSyncRouter",)
 # --- Middleware ---
 MIDDLEWARE = [
     "django_tenants.middleware.main.TenantMainMiddleware",  # ต้องมาก่อน
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -113,6 +115,15 @@ DATABASES = {
         "PORT": os.getenv("DB_PORT"),
     }
 }
+
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # ✅ ให้ frontend เข้าถึงได้
+   " http://branch-a.localhost:3000",
+   " http://branch-b.localhost:3000",
+
+]
+CORS_ALLOW_CREDENTIALS = True
 
 # --- URL ---
 ROOT_URLCONF = "myproject.urls"
