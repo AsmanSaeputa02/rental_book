@@ -1,4 +1,4 @@
-# services/services_set/rental_service.py  (หรือที่เดิมที่คุณเก็บ ViewSet)
+# services/services_set/rental_service.py 
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import status
